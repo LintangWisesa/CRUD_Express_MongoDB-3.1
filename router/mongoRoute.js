@@ -30,4 +30,26 @@ router.get('/data/:index', (req, res)=>{
     })
 })
 
+// POST data
+router.post('/data', (req, res)=>{
+    mongc.connect(url, (error, client)=>{
+        console.log('Terhubung!')
+        var koleksi = client.db('tokoku').collection('users')
+        koleksi.insertOne({
+            nama: req.body.name,
+            email: req.body.surel,
+            kota: req.body.city
+        }, () => {
+            console.log('Data terkirim!')
+            res.send({
+                nama: req.body.name,
+                email: req.body.surel,
+                kota: req.body.city,
+                status: 'Data terkirim!'
+            })
+            client.close()
+        })
+    })
+})
+
 module.exports = router
