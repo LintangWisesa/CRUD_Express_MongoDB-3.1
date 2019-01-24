@@ -17,4 +17,17 @@ router.get('/data', (req, res)=>{
     })
 })
 
+// GET specific data by index data
+router.get('/data/:index', (req, res)=>{
+    mongc.connect(url, (error, client)=>{
+        console.log('Terhubung!')
+        var koleksi = client.db('tokoku').collection('users')
+        koleksi.find().toArray((error, data)=>{
+            console.log(data[req.params.index - 1])
+            res.send(data[req.params.index - 1])
+            client.close()
+        })
+    })
+})
+
 module.exports = router
